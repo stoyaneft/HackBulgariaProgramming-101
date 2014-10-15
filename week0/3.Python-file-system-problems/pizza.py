@@ -23,7 +23,7 @@ def pizza():
     if command in COMMANDS:
         COMMANDS[command](full_command)
     else:
-        print('Unknown command!\n' \
+        print('Unknown command!\n'
               'Try one of the following:\n'
               'take <name> <price>\n'
               'status\n'
@@ -73,7 +73,8 @@ def save(command):
 def list_orders(command):
     full_order_filenames = glob('*.txt')
     global order_filenames
-    order_filenames = [os.path.splitext(filename)[0] for filename in full_order_filenames]
+    order_filenames = [
+        os.path.splitext(filename)[0] for filename in full_order_filenames]
     for i, filename in enumerate(order_filenames):
         print('[' + str(i + 1) + '] - ' + filename)
     global list_called
@@ -86,7 +87,7 @@ def load(command):
         print('Use list command before loading.')
         return
     if not is_saved and not discard_enabled:
-        print('You have not saved the current order.\n' \
+        print('You have not saved the current order.\n'
               'If you wish to discard it, type load <number> again.')
         discard_enabled = True
         return
@@ -109,9 +110,9 @@ def load(command):
 def finish(command):
     global finish_prompted
     if not is_saved and not finish_prompted:
-        print('You have not saved your order.\n' \
-            'If you wish to continue, type finish again.\n' \
-            'If you want to save your order, type save')
+        print('You have not saved your order.\n'
+              'If you wish to continue, type finish again.\n'
+              'If you want to save your order, type save')
         finish_prompted = True
         return
     print('Finishing order. Goodbye!')
