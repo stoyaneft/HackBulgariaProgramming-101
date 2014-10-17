@@ -6,9 +6,6 @@ class Employee:
     def getName(self):
         return self.__name
 
-    def weeklyPay(hours):
-        pass
-
 
 class HourlyEmployee(Employee):
 
@@ -44,8 +41,8 @@ class Manager(SalariedEmployee):
 
 staff = []
 staff.append(HourlyEmployee("Morgan, Harry", 30.0))
-staff.append(SalariedEmployee("Lin, Sally", 52001.0))
-staff.append(Manager("Smith, Mary", 104001.0, 50.0))
+staff.append(SalariedEmployee("Lin, Sally", 52000.0))
+staff.append(Manager("Smith, Mary", 104000.0, 50.0))
 for employee in staff:
     hours = int(input("Hours worked by " + employee.getName() + ": "))
     pay = employee.weeklyPay(hours)
