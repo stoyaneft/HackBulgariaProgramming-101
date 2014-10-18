@@ -14,5 +14,3 @@ def goldbach(n):
     gb_conjecture = [(prime, n-prime)
                      for prime in prime_numbers if is_prime(n - prime)]
     return gb_conjecture
-
-print (goldbach(16))

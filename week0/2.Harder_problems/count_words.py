@@ -4,10 +4,3 @@ def count_words(arr):
         if word not in counted_words:
             counted_words[word] = arr.count(word)
     return counted_words
-
-
-def main():
-    print(count_words(["apple", "banana", "apple", "pie"]))
-
-if __name__ == '__main__':
-    main()

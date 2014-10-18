@@ -7,11 +7,3 @@ def groupby(func, seq):
         else:
             grouped_dict[key].append(item)
     return grouped_dict
-
-
-def main():
-    print(groupby(lambda x: 'odd' if x % 2 else 'even',
-                  [1, 2, 3, 5, 8, 9, 10, 12]))
-
-if __name__ == '__main__':
-    main()

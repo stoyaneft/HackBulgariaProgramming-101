@@ -18,6 +18,3 @@ def prepare_meal(number):
 
 def main():
     print(prepare_meal(5))
-
-if __name__ == '__main__':
-    main()

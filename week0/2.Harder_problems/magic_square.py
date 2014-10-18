@@ -16,5 +16,3 @@ def magic_square(matrix):
     forw_diag_sum = sum(forward_diagonal)
     back_diag_sum = sum(backward_diagonal)
     return forw_diag_sum == back_diag_sum and forw_diag_sum == row_sums[0]
-
-print(magic_square([[16, 23, 17], [78, 32, 21], [17, 16, 15]]))
