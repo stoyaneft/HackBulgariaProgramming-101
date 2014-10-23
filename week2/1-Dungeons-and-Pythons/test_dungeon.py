@@ -15,10 +15,19 @@ class TestDungeon(unittest.TestCase):
             map_file.write(self.start_map_content)
         self.map = Dungeon('basic_dungeon.txt')
         self.hero_player = Hero('Stoyan', 100, 'DeathBringer')
+        self.hero_player.equip_weapon(Weapon('Sword', 20, 0.5))
         self.orc_player = Orc('Broks', 100, 1.5)
+        self.orc_player.equip_weapon(Weapon('Stick', 10, 0.1))
+        self.battle_map_content = 'S.#\n#S#'
+        with open('battle_map.txt', 'w') as map_file:
+            map_file.write(self.battle_map_content)
+        self.battle_map = Dungeon('battle_map.txt')
+        self.battle_map.spawn('human', self.hero_player)
+        self.battle_map.spawn('orc', self.orc_player)
 
     def tearDown(self):
         remove(self.map.filename)
+        remove('battle_map.txt')
 
     def test_dungeon_init(self):
         self.assertEqual(self.map.filename, 'basic_dungeon.txt')
@@ -74,21 +83,16 @@ class TestDungeon(unittest.TestCase):
         )
 
     def test_move_into_battle(self):
-        battle_map_content = 'S.#\n#S#'
-        with open('battle_map.txt', 'w') as map_file:
-            map_file.write(battle_map_content)
-        battle_map = Dungeon('battle_map.txt')
-        hero = Hero('Stoyan', 200, 'DeathBringer')
-        hero.equip_weapon(Weapon('Sword', 20, 0.5))
-        orc = Orc('Beginner Orc', 100, 1.5)
-        orc.equip_weapon(Weapon('Stick', 10, 0.1))
-        battle_map.spawn('human', hero)
-        battle_map.spawn('orc', orc)
-        battle_map.move('human', 'right')
-        battle_map.move('orc', 'up')
-        player_dead = hero.health == 0 or orc.health == 0
+        self.battle_map.move('human', 'right')
+        self.battle_map.move('orc', 'up')
+        player_dead = not self.hero_player.is_alive(
+        ) or not self.orc_player.is_alive()
         self.assertTrue(player_dead)
-        remove('battle_map.txt')
+
+    def test_map_accurate_after_battle(self):
+        self.battle_map.move('human', 'right')
+        self.battle_map.move('orc', 'up')
+        self.assertEqual(self.battle_map.print_map(), '.H#\n#.#')
 
 if __name__ == '__main__':
     unittest.main()

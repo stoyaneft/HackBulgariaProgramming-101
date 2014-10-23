@@ -3,17 +3,17 @@ from random import randint
 
 class Fight:
 
-    def __init__(self, hero, orc):
-        self.hero = hero
-        self.orc = orc
+    def __init__(self, attacker, defender):
+        self.attacker = attacker
+        self.defender = defender
 
     def simulate_fight(self):
         roll = randint(0, 1)
-        PLAYERS = (self.hero, self.orc)
+        PLAYERS = (self.attacker, self.defender)
         current_player = roll
         print()
         print('{} starts the fight.'.format(PLAYERS[roll].name))
-        while self.hero.current_health != 0 and self.orc.current_health != 0:
+        while self.attacker.is_alive() and self.defender.is_alive():
             damage = PLAYERS[current_player].attack()
             other_player = (current_player + 1) % 2
             print('{} does {} damage to {}.'.format(
@@ -24,7 +24,5 @@ class Fight:
                 PLAYERS[other_player].name,
                 PLAYERS[other_player].current_health))
             current_player = other_player
-        if self.hero.health:
-            print('{} wins!'.format(self.hero.name))
-        else:
-            print('{} wins!'.format(self.orc.name))
+        winner = (current_player + 1) % 2
+        print('{} wins!'.format(PLAYERS[winner].name))

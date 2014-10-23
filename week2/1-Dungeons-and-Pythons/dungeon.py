@@ -7,6 +7,7 @@ class Dungeon:
     def __init__(self, filename):
         self.filename = filename
         self.players = {}
+        self.occupied_cells = {}
         with open(self.filename, 'r') as map_file:
             self.map_string = map_file.read()
         self.map_grid = [list(line) for line in self.map_string.split('\n')]
@@ -38,6 +39,7 @@ class Dungeon:
                 entity_pos = [row_str.index(map_symbol), i]
                 self.map_grid[entity_pos[1]][entity_pos[0]] = map_symbol
                 self.players[player_name] = [entity, entity_pos]
+                self.occupied_cells[tuple(entity_pos)] = entity
                 self._update_map()
                 return True
         return False
@@ -56,7 +58,7 @@ class Dungeon:
                 self.map_grid[0]) or new_pos[1] < 0 or new_pos[1] > len(
                 self.map_grid):
             return (False, player_pos)
-        if self.map_grid[new_pos[1]][new_pos[0]] != '.':
+        if self.map_grid[new_pos[1]][new_pos[0]] == '#':
             return (False, player_pos)
         return (True, new_pos)
 
@@ -77,11 +79,18 @@ class Dungeon:
             old_row = old_player_pos[1]
             old_col = old_player_pos[0]
             self.map_grid[old_row][old_col] = '.'
+            del self.occupied_cells[tuple(old_player_pos)]
             new_row = new_player_pos[1]
             new_col = new_player_pos[0]
-            # if self.map_grid[new_row][new_col] != '.':
-            #     hero =
-            #     fight = Fight()
+            if self.map_grid[new_row][new_col] != '.':
+                attacker = player[0]
+                defender = self.occupied_cells[tuple(new_player_pos)]
+                fight = Fight(attacker, defender)
+                fight.simulate_fight()
+                if not fight.attacker.is_alive():
+                    self._update_map()
+                    return True
+            self.occupied_cells[tuple(new_player_pos)] = player[0]
             self.map_grid[new_row][new_col] = Dungeon._get_entity_symbol(
                 player[0])
             self._update_map()
