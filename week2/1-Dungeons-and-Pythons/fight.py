@@ -24,7 +24,7 @@ class Fight:
                 PLAYERS[other_player].name,
                 PLAYERS[other_player].current_health))
             current_player = other_player
-        if not self.hero.health:
+        if self.hero.health:
             print('{} wins!'.format(self.hero.name))
         else:
             print('{} wins!'.format(self.orc.name))
