@@ -2,6 +2,7 @@ import unittest
 
 from weapon import Weapon
 
+
 class TestWeapon(unittest.TestCase):
 
     def setUp(self):
@@ -32,4 +33,3 @@ class TestWeapon(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
-

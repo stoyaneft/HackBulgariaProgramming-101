@@ -1,0 +1,21 @@
+{
+    "name":"My playlist",
+    "songs":[
+        {
+            "album":"Album",
+            "artist":"Artist",
+            "bitrate":10,
+            "length":240,
+            "rating":3,
+            "title":"Name1"
+        },
+        {
+            "album":"Album",
+            "artist":"Artist",
+            "bitrate":9,
+            "length":210,
+            "rating":4,
+            "title":"Name2"
+        }
+    ]
+}
