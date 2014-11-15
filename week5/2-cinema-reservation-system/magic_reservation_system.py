@@ -71,7 +71,6 @@ def show_movie_projections(movie_id, date=None, tickets=None):
             print_projection_info(projection_info, tickets)
 
 
-
 def find_seats_available(projection_id):
     seats_occupied = find_ocupied_seats(projection_id)
     return HALL_SIZE - len(seats_occupied)
@@ -137,7 +136,8 @@ def make_reservation():
     for ticket in range(number_of_tickets):
         seat_free = False
         while not seat_free:
-            seat_chosen = input("Step 4 (Seats): Choose seat {}>".format(ticket + 1))
+            seat_chosen = input(
+                "Step 4 (Seats): Choose seat {}>".format(ticket + 1))
             if seat_chosen == 'give_up':
                 return
             seat_chosen = tuple(int(x.strip()) for x in seat_chosen.split(','))
@@ -187,7 +187,8 @@ def print_commands_available():
     print('- "show_movie_projections <movie_id> [<date>]" prints all \
 projections of a given movie for the given date (date is optional).')
     print('- "make_reservation" - choose a movie and reserve your seats')
-    print('- "cancel_reservation <name>" disintegrates given person''s reservation')
+    print('- "cancel_reservation <name>" disintegrates \
+given person''s reservation')
     print('- "exit" - Leaves program')
 
 
