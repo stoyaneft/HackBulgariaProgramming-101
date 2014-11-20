@@ -214,7 +214,26 @@ def deposit(username, money):
 
 
 def withdraw(username, money):
-    cursor.execute(
-        '''UPDATE clients SET balance=balance-?
+    balance = get_balance(username)
+    if balance - money < 0:
+        return False
+    else:
+        cursor.execute(
+            '''UPDATE clients SET balance=balance-?
         WHERE username = ?''', (money, username))
+        conn.commit()
+        return True
+
+
+def get_balance(username):
+    cursor.execute('''SELECT balance FROM clients WHERE username = ?
+        ''', (username,))
+    balance = cursor.fetchone()[0]
+    return balance
+
+
+def set_balance(username, balance):
+    cursor.execute(
+        '''UPDATE clients SET balance=balance+?
+        WHERE username = ?''', (balance, username))
     conn.commit()

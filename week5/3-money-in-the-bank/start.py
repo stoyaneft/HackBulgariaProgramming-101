@@ -15,7 +15,6 @@ You can register, login, send-reset-password or reset-password")
             register()
 
         elif command == 'login':
-            #logged_user = sql_manager.login('pesho', 'spqs2-mamuje')
             login()
 
         elif command == 'send-reset-password':
@@ -28,7 +27,7 @@ You can register, login, send-reset-password or reset-password")
 
         elif command == 'reset-password':
             username = full_command[1]
-            reset_password(username, message)
+            reset_password(username)
 
         elif command == 'help':
             print("login - for logging in!")
@@ -83,9 +82,10 @@ def login():
 
 
 def reset_password(username):
-    entered_hash = input('Enter the send hash to reset your password')
+    entered_hash = input('Enter the send hash to reset your password: ')
     user_hash = sql_manager.get_user_reset_pass_hash(username)
     if entered_hash == user_hash:
+        print('You can now change your password:')
         new_pass = getpass.getpass()
         sql_manager.reset_password(new_pass, username)
     else:
@@ -144,7 +144,7 @@ def logged_menu(logged_user):
             print(logged_user.get_message())
 
         elif command == 'deposit':
-            money = input('Enter amount:')
+            money = int(input('Enter amount:'))
             tan = input('Enter TAN code:')
             if tan in sql_manager.get_user_unused_tans(username):
                 sql_manager.deposit(username, money)
@@ -155,10 +155,10 @@ def logged_menu(logged_user):
                 print('Wrong TAN code!')
 
         elif command == 'withdraw':
-            money = input('Enter amount:')
+            money = int(input('Enter amount:'))
             tan = input('Enter TAN code:')
             if tan in sql_manager.get_user_unused_tans(username):
-                if sql_manager.withdraw(money):
+                if sql_manager.withdraw(username, money):
                     print('Transaction successful!')
                     print('{} were withdrawed from the bank'.format(money))
                 else:
@@ -172,14 +172,12 @@ def logged_menu(logged_user):
                 logged_user.get_balance()))
 
         elif command == 'get-tan':
-            unused_tans = sql_manager.get_user_unused_tans('adfa')
-            print(unused_tans)
+            unused_tans = sql_manager.get_user_unused_tans(username)
             if unused_tans:
                 print(
                     'You have {} remaining TAN codes to use!'.format(
                         len(unused_tans)))
             else:
-                print('AREVE')
                 password_correct = False
                 while not password_correct:
                     password = getpass.getpass()
@@ -188,7 +186,6 @@ def logged_menu(logged_user):
                     if not password_correct:
                         print('Incorrect password!')
                 tans = sql_manager.generate_tans(username)
-                print(tans)
                 desc_msg = 'You can use these 10 TANS in order to perform a transaction:'
                 tans.insert(0, desc_msg)
                 message = '\n'.join(tans)

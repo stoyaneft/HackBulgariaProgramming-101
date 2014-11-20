@@ -1,4 +1,8 @@
+import sql_manager
+
+
 class Client():
+
     def __init__(self, id, username, balance, message):
         self.__username = username
         self.__balance = balance
@@ -9,7 +13,7 @@ class Client():
         return self.__username
 
     def get_balance(self):
-        return self.__balance
+        return sql_manager.get_balance(self.__username)
 
     def get_id(self):
         return self.__id
