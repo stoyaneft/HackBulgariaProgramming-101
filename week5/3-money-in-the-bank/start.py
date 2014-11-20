@@ -168,7 +168,7 @@ def logged_menu(logged_user):
                 print('Wrong TAN code!')
 
         elif command == 'display_balance':
-            print('You have {} money in your account'.format(
+            print('You have {} $ in your account'.format(
                 logged_user.get_balance()))
 
         elif command == 'get-tan':
