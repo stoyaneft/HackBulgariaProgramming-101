@@ -1,5 +1,4 @@
 from sqlalchemy import desc
-from sqlalchemy import delete
 
 from movie import Movie
 from projection import Projection
