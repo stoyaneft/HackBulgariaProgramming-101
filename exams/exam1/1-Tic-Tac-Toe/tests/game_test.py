@@ -24,7 +24,7 @@ class GameTest(unittest.TestCase):
         self.assertFalse(self.game.is_valid_move(9))
 
     def testInvalidMoveOnOccupiedCell(self):
-        self.game.play_move((0, 2))
+        self.game.play_move(2)
         self.assertFalse(self.game.is_valid_move(2))
 
     def assertGameStatus(self, expected_status):
@@ -82,7 +82,7 @@ class GameTest(unittest.TestCase):
         self.assertGameStatus(GameStatus.TIE)
 
     def testPlayAMove(self):
-        self.game.play_move((1, 2))
+        self.game.play_move(5)
         expected_board = [
             ' ', ' ', ' ',
             ' ', ' ', 'X',
@@ -98,7 +98,8 @@ class GameTest(unittest.TestCase):
         ]
         self.game._player = 'O'
         self.game._update_game_status()
-        self.game.play_move()
+        move_index = self.game.get_computer_move()
+        self.game.play_move(move_index)
         expected_board = [
             'X', ' ', 'X',
             'O', 'O', 'O',
@@ -114,7 +115,8 @@ class GameTest(unittest.TestCase):
         ]
         self.game._player = 'O'
         self.game._update_game_status()
-        self.game.play_move()
+        move_index = self.game.get_computer_move()
+        self.game.play_move(move_index)
         expected_board = [
             'X', 'X', 'O',
             ' ', 'O', ' ',
@@ -130,7 +132,8 @@ class GameTest(unittest.TestCase):
         ]
         self.game._player = 'O'
         self.game._update_game_status()
-        self.game.play_move()
+        move_index = self.game.get_computer_move()
+        self.game.play_move(move_index)
         expected_board = [
             'X', ' ', ' ',
             ' ', 'O', ' ',
@@ -146,7 +149,8 @@ class GameTest(unittest.TestCase):
         ]
         self.game._player = 'O'
         self.game._update_game_status()
-        self.game.play_move()
+        move_index = self.game.get_computer_move()
+        self.game.play_move(move_index)
         expected_board = [
             'X', ' ', 'O',
             ' ', 'O', ' ',
@@ -162,7 +166,8 @@ class GameTest(unittest.TestCase):
         ]
         self.game._player = 'O'
         self.game._update_game_status()
-        self.game.play_move()
+        move_index = self.game.get_computer_move()
+        self.game.play_move(move_index)
         expected_board = [
             'X', 'X', 'O',
             'O', 'O', 'O',

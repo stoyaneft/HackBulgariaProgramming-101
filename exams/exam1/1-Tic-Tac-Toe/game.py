@@ -45,16 +45,15 @@ class Game:
         index = position[0] * Game.ROWS_COUNT + position[1]
         return index
 
+    @staticmethod
+    def calculate_coords(index):
+        coords = index // Game.ROWS_COUNT, index % Game.COLS_COUNT
+        return coords
+
     def is_valid_move(self, index):
         return index in range(9) and \
             self._board[index] == Cell.EMPTY and \
             self._status == GameStatus.IN_PROGRESS
-
-    def _play_human_move(self, position):
-        index = self.calculate_index(position)
-        if not self.is_valid_move(index):
-            raise InvalidMoveError("Invalid move!")
-        self._board[index] = self._player
 
     def _change_player(self):
         if self._player == Cell.X:
@@ -62,16 +61,10 @@ class Game:
         else:
             self._player = Cell.X
 
-    def _play_computer_move(self):
-        if self._status == GameStatus.IN_PROGRESS:
-            move_index = self._get_computer_move()
-            self._board[move_index] = self._player
-
-    def play_move(self, position=None):
-        if self._player == Cell.X:
-            self._play_human_move(position)
-        else:
-            self._play_computer_move()
+    def play_move(self, index):
+        if not self.is_valid_move(index):
+            raise InvalidMoveError("Invalid move!")
+        self._board[index] = self._player
         self._update_game_status()
         self._change_player()
 
@@ -93,12 +86,11 @@ class Game:
             self._status = GameStatus.IN_PROGRESS
 
     def get_board_string(self):
-        rows = [' '.join(self._board[i: i + 3]) for i in (0, 3, 6)]
+        rows = [' '.join(self._board[i: i + self.ROWS_COUNT])
+                for i in [self.COLS_COUNT * i for i in range(self.ROWS_COUNT)]]
         return '\n'.join(rows)
 
-    '''Medium-powered AI'''
-
-    def _get_computer_move(self):
+    def get_computer_move(self):
     # First, check if we can win in the next move
         for i in range(0, 9):
             board_copy = self._board[:]
@@ -126,12 +118,13 @@ class Game:
             return 4
 
         # Try to take one of the corners, if they are free.
-        corners = [0, 2, 6, 8]
-        for i in corners:
+        CORNERS = [0, 2, 6, 8]
+        for i in CORNERS:
             if self._board[i] == Cell.EMPTY:
                 return i
 
-        sides = [1, 3, 5, 7]
-        for i in sides:
+        # If none of the above take one of the left
+        SIDES = [1, 3, 5, 7]
+        for i in SIDES:
             if self._board[i] == Cell.EMPTY:
                 return i

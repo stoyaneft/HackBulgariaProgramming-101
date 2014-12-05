@@ -1,7 +1,7 @@
 import os
 import time
 
-from game import Game, GameStatus, InvalidMoveError
+from game import Game, GameStatus, InvalidMoveError, Cell
 
 
 class CLI:
@@ -13,20 +13,21 @@ class CLI:
         while self.game._status == GameStatus.IN_PROGRESS:
             self._clear()
             self.draw_board()
-            if self.game._player == 'X':
-                move = None
-                while move is None:
-                    move = self._get_move()
+            move_index = None
+            while move_index is None:
+                if self.game._player == Cell.X:
+                    move_coords = self._get_move()
+                    move_index = Game.calculate_index(move_coords)
+                else:
+                    move_index = self.game.get_computer_move()
                 try:
-                    self.game.play_move(move)
+                    self.game.play_move(move_index)
                 except InvalidMoveError:
                     print('Invalid move!')
-                    time.sleep(1)
-            else:
-                move = self.game._get_computer_move()
-                self.game.play_move()
-                print('Computer played at {} {}'.format(move // 3, move % 3))
-                time.sleep(1.5)
+            if self.game._player == Cell.X:
+                print('Computer played at {} {}'.format(
+                    *Game.calculate_coords(move_index)))
+            time.sleep(1)
 
         self._clear()
         self.draw_board()
