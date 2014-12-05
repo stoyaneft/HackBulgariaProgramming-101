@@ -8,13 +8,15 @@ class CLI:
         self.game = Game()
         self.command_parser = CommandParser()
         self.init_command_parser()
+        print('Welcome to the "Do you even math?" game!')
 
     def init_command_parser(self):
         self.command_parser.add_command('start', self.start)
         self.command_parser.add_command('highscores', self.print_highscores)
+        self.command_parser.add_command('exit', self.exit)
 
-    def play(self):
-        print('''Welcome to the "Do you even math?" game!
+    def start_menu(self):
+        print('''
 Here are your options:
 - start
 - highscores
@@ -37,11 +39,18 @@ Here are your options:
             if self.game.give_answer(answer):
                 print('Correct')
             else:
-                print('Incorrect! Answer was {}. Ending game. You score is: {}'.format(
+                print('''Incorrect! Answer was {}. Ending game. You score is: {}'''.format(
                     self.game.get_answer(), self.game.get_score()))
+                self.game.restart()
+                self.start_menu()
 
     def print_highscores(self):
         print(self.game.get_highscores_string())
+        self.start_menu()
+
+    def exit(self):
+        import sys
+        sys.exit()
 
 if __name__ == '__main__':
-    CLI().play()
+    CLI().start_menu()

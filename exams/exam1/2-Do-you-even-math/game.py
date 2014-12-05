@@ -14,12 +14,11 @@ class Game:
         self.__level = 0
         self.__expression = None
         self.__is_over = False
-        self.username = 'ivan'
+        self.username = None
 
     def generate_new_question(self):
         shuffle(self.OPERATIONS)
         operation = self.OPERATIONS[0]
-        print(operation)
         if operation == '^':
             second_arg = randint(0, 15)
             self.__expression = {'first_arg': 2, 'operation': '^',
@@ -33,17 +32,17 @@ class Game:
             upper_bound = 100
         first_arg = randint(1, upper_bound)
         second_arg = randint(1, upper_bound)
-        expression = {'first_arg': first_arg, 'second_arg': second_arg,
-                      'operation': operation}
         if operation == '+':
             answer = first_arg + second_arg
         elif operation == '-':
             answer = first_arg - second_arg
         elif operation == '//':
+            second_arg = randint(2, 10)
             answer = first_arg // second_arg
         elif operation == 'x':
             answer = first_arg * second_arg
-        expression['answer'] = answer
+        expression = {'first_arg': first_arg, 'second_arg': second_arg,
+                      'operation': operation, 'answer': answer}
         self.__expression = expression
         self.__level += 1
 
@@ -92,6 +91,14 @@ class Game:
         return (self.__level - 1) ** 2
 
     def _save_highscore(self):
-        self.__session.query(Player).filter(
-            Player.name == self.username).update({'highscore': self.get_score()})
-        self.__session.commit()
+        current_highscore = self.__session.query(
+            Player.highscore).filter(Player.name == self.username).one()[0]
+        if current_highscore < self.get_score():
+            self.__session.query(Player).filter(
+                Player.name == self.username).update(
+                {'highscore': self.get_score()})
+            self.__session.commit()
+
+    def restart(self):
+        self.__is_over = False
+        self.__level = 0
